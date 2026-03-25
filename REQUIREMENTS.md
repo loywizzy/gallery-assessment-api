@@ -37,16 +37,16 @@
 เพื่อให้ระบบสามารถทำงานบน Production ได้จริงและประหยัดค่าใช้จ่าย ระบบจะถูก Deploy โดยแยกส่วน (Microservices Concept) ดังนี้:
 
 ### 3.1 Frontend Hosting
-* **Provider:** Vercel หรือ Netlify
-* **OS/Software:** Serverless Platform, Node.js Environment (สำหรับการ Build)
+* **Provider:** Vercel (Production) / Docker Desktop (Local)
+* **OS/Software:** Node.js Environment (Build), NGINX Alpine (สำหรับเสิร์ฟไฟล์ Static และทำ Reverse Proxy ในโหมด Docker)
 * **Specifications:** Auto-scaling (Free Tier)
-* **Deployment Method:** CI/CD เชื่อมต่อกับ GitHub Repository (Build & Deploy อัตโนมัติเมื่อมีการ Push โค้ด)
+* **Deployment Method:** CI/CD เชื่อมต่อกับ GitHub Repository หรือรันผ่าน `docker-compose` สำหรับเทสในเครื่อง
 
 ### 3.2 Backend Server
-* **Provider:** Render หรือ Koyeb
-* **OS/Software:** Linux (Ubuntu/Debian based via Docker container), Go Runtime
+* **Provider:** Render (Production) / Docker Desktop (Local)
+* **OS/Software:** Linux (Alpine based via Multi-stage Dockerfile), Go Runtime 1.26
 * **Specifications:** 0.1 CPU, 512MB RAM (Free Tier)
-* **Deployment Method:** Deploy ผ่าน Dockerfile หรือ Build จาก Source Code บน GitHub โดยตรง
+* **Deployment Method:** Deploy ผ่าน Dockerfile แบบเบ็ดเสร็จ หรือรันคู่ฐานข้อมูลผ่าน `docker-compose`
 
 ### 3.3 Database Server
 * **Provider:** Supabase หรือ Neon (Managed PostgreSQL Server)

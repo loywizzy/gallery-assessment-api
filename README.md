@@ -264,10 +264,10 @@ Health check endpoint
 
 | Item | Detail |
 |------|--------|
-| **Provider** | Render หรือ Koyeb |
-| **OS/Software** | Linux (Ubuntu/Debian via Docker), Go Runtime |
+| **Provider** | Render (Recommended) / Koyeb / Docker Desktop |
+| **OS/Software** | Linux (Alpine via Multi-stage Dockerfile), Go Runtime 1.26 |
 | **Specs** | 0.1 CPU, 512MB RAM (Free Tier) |
-| **Method** | Deploy ผ่าน Dockerfile หรือ Build จาก Source Code บน GitHub |
+| **Method** | โค้ดมีการตั้งค่า `Dockerfile` และ `docker-compose.yml` ครบถ้วนพร้อม Deploy! |
 
 ### Deployment Architecture
 
@@ -282,8 +282,8 @@ graph LR
     end
 
     subgraph DEPLOY_BE["Backend Host"]
-        RENDER["Render / Koyeb"]
-        DOCKER["Docker Container"]
+        RENDER["Render.com (Docker)"]
+        DOCKER["Docker Container (Alpine)"]
         GIN_SRV["Gin Server :8080"]
     end
 
@@ -304,19 +304,26 @@ graph LR
 
 ## Getting Started
 
+### 🐳 วิธีที่ 1: รันผ่าน Docker (แนะนำ)
+ตู้ Docker จะสร้าง Database พร้อมรัน `seed.sql` ให้อัตโนมัติ (ไม่ต้องหา Supabase ก็รันได้):
+```bash
+# รัน API ปกติ:
+docker-compose up -d --build
+
+# หากต้องการหยุดแอปและทำลายข้อมูลทิ้งเพื่อเริ่มใหม่:
+docker-compose down -v
+```
+
+### 💻 วิธีที่ 2: รันสดบนเครื่อง (Development Mode)
 ```bash
 # 1. Setup environment
 cp .env.example .env
 # แก้ไข DATABASE_URL ให้ตรงกับ PostgreSQL (Supabase/Neon)
 
-# 2. Run server (development)
+# 2. Run server
 go run ./cmd/server/
 # → ✅ Connected to database
 # → 🚀 Server starting on :8080
-
-# 3. Build binary (production)
-go build -o server ./cmd/server/
-./server
 ```
 
 ### Environment Variables
