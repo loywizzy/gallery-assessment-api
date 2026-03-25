@@ -328,8 +328,11 @@ go build -o server ./cmd/server/
 
 ### Mock Data
 
-ใช้ `seed.sql` (อยู่ที่ root project) สำหรับ generate mock data:
+มีไฟล์ `seed.sql` (อยู่ในโฟลเดอร์ `backend` หรือที่ root project) เพื่อจำลองข้อมูล Database:
 ```bash
-psql "$DATABASE_URL" -f ../seed.sql
-# หรือ copy เนื้อหาไปวางใน SQL Editor บน Supabase/Neon Dashboard
+# หากติดตั้ง PostgreSQL cli ไว้ในเครื่อง
+psql "<YOUR_DATABASE_URL>" -f ./seed.sql
+
+# วิธีที่ง่ายที่สุด (แนะนำ):
+# Copy เนื้อหาทั้งหมดใน `seed.sql` ไปวางใน SQL Editor บน Supabase Dashboard แล้วกด Run!
 ```

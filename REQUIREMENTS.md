@@ -64,5 +64,5 @@
 4. **Hashtag Filtering:** เมื่อคลิกที่ Hashtag ใดๆ ระบบจะเคลียร์รูปภาพเก่า และดึงเฉพาะรูปภาพที่มี Hashtag นั้นๆ มาแสดงผล
 5. **Mock Data Integration:**
    * ใช้บริการจาก `placehold.co` ในการจำลองรูปภาพ (เช่น `https://placehold.co/600x400`)
-   * ใช้ไฟล์ `seed.sql` ในการ Generate ข้อมูลรูปภาพ 200 รูป และสุ่ม Hashtag มากกว่า 10 หมวดหมู่ลงฐานข้อมูล PostgreSQL
+   * ใช้ไฟล์ `seed.sql` ในการ Generate ข้อมูลรูปภาพ 60 รูป และสุ่ม Hashtag 20 หมวดหมู่ลงฐานข้อมูล PostgreSQL
 6. **Documentation:** มี System Architecture Diagram และคำอธิบายวิธีการ Deploy ชัดเจน (ระบุใน `README.md` ของทั้ง frontend และ backend)
