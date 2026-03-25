@@ -14,17 +14,18 @@
 ## 2. Technology Stack
 
 ### Frontend (Client-Side)
-* **Framework/Library:** React.js (สร้างโปรเจกต์ด้วย Vite เพื่อความรวดเร็ว) หรือ Next.js
+* **Framework/Library:** React.js + Vite
 * **Language:** TypeScript
 * **Styling:** Tailwind CSS (สำหรับจัดการ UI และ Responsive design)
-* **Key Libraries:** * `react-masonry-css`: สำหรับจัด Layout รูปภาพขนาดไม่เท่ากัน
-  * `axios` หรือ `fetch API`: สำหรับเรียกใช้งาน Backend API
-  * `IntersectionObserver` API (หรือ `react-infinite-scroll-component`): สำหรับตรวจจับการ Scroll หน้าจอ
+* **Key Libraries:** 
+  * `react-masonry-css`: สำหรับจัด Layout รูปภาพขนาดไม่เท่ากัน
+  * `axios`: สำหรับเรียกใช้งาน Backend API
+  * `IntersectionObserver` API (Custom Hook): สำหรับตรวจจับการ Scroll หน้าจอ (Infinite Scroll)
 
 ### Backend (Server-Side)
 * **Language:** Go (Golang)
-* **Framework:** Gin (เพื่อจัดการ Routing และ Middleware อย่างมีประสิทธิภาพ)
-* **Database Driver:** `gorm` (ORM) หรือ `database/sql` ร่วมกับ `pgx`
+* **Framework:** Gin (จัดการ Routing และ Middleware อย่างมีประสิทธิภาพ)
+* **Database Driver:** `database/sql` ร่วมกับ `lib/pq` (Native PostgreSQL driver)
 
 ### Database
 * **Database Engine:** PostgreSQL (จัดการ Relational Data ระหว่าง Image และ Hashtag)
@@ -61,6 +62,7 @@
    * เมื่อผู้ใช้ Scroll ลงมาถึงด้านล่างของหน้าจอ ระบบจะเรียก API โหลดรูปภาพชุดต่อไปมาแสดงเพิ่มอัตโนมัติ (Pagination: Page, Limit)
 3. **Masonry Layout:** รูปภาพที่แสดงมีขนาด กว้าง/ยาว ไม่เท่ากัน (Dynamic Aspect Ratio)
 4. **Hashtag Filtering:** เมื่อคลิกที่ Hashtag ใดๆ ระบบจะเคลียร์รูปภาพเก่า และดึงเฉพาะรูปภาพที่มี Hashtag นั้นๆ มาแสดงผล
-5. **Mock Data Integration:** * ใช้บริการจาก `placehold.co` ในการจำลองรูปภาพ (เช่น `https://placehold.co/600x400`)
-   * สร้าง Script หรือ Seeder เพื่อ Generate ข้อมูลรูปภาพและสุ่ม Hashtag ลงฐานข้อมูลสำหรับการทดสอบ
+5. **Mock Data Integration:**
+   * ใช้บริการจาก `placehold.co` ในการจำลองรูปภาพ (เช่น `https://placehold.co/600x400`)
+   * ใช้ไฟล์ `seed.sql` ในการ Generate ข้อมูลรูปภาพ 200 รูป และสุ่ม Hashtag มากกว่า 10 หมวดหมู่ลงฐานข้อมูล PostgreSQL
 6. **Documentation:** มี System Architecture Diagram และคำอธิบายวิธีการ Deploy ชัดเจน (ระบุใน `README.md` ของทั้ง frontend และ backend)
