@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 
 	"image-gallery-backend/internal/models"
+
+	"github.com/lib/pq"
 )
 
 type ImageRepository struct {
@@ -15,21 +17,24 @@ func NewImageRepository(db *sql.DB) *ImageRepository {
 	return &ImageRepository{db: db}
 }
 
-// GetImages ดึงรูปภาพพร้อม hashtags (รองรับ filter + pagination)
-func (r *ImageRepository) GetImages(page, limit int, hashtag string) ([]models.Image, int, error) {
+// GetImages ดึงรูปภาพพร้อม hashtags (รองรับ filter array of hashtags + pagination)
+func (r *ImageRepository) GetImages(page, limit int, hashtags []string) ([]models.Image, int, error) {
 	offset := (page - 1) * limit
 	var rows *sql.Rows
 	var err error
 	var total int
 
-	if hashtag != "" {
-		// Count total for this hashtag
+	if len(hashtags) > 0 {
+		// Count total for these hashtags using EXISTS to prevent duplicate image rows
 		err = r.db.QueryRow(`
-			SELECT COUNT(DISTINCT i.id)
+			SELECT COUNT(i.id)
 			FROM images i
-			INNER JOIN image_hashtags ih ON i.id = ih.image_id
-			INNER JOIN hashtags h ON ih.hashtag_id = h.id AND h.name = $1
-		`, hashtag).Scan(&total)
+			WHERE EXISTS (
+				SELECT 1 FROM image_hashtags ih
+				JOIN hashtags h ON ih.hashtag_id = h.id
+				WHERE ih.image_id = i.id AND h.name = ANY($1)
+			)
+		`, pq.Array(hashtags)).Scan(&total)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -44,11 +49,14 @@ func (r *ImageRepository) GetImages(page, limit int, hashtag string) ([]models.I
 					 WHERE ih2.image_id = i.id), '[]'
 				) AS hashtags
 			FROM images i
-			INNER JOIN image_hashtags ih ON i.id = ih.image_id
-			INNER JOIN hashtags h ON ih.hashtag_id = h.id AND h.name = $1
+			WHERE EXISTS (
+				SELECT 1 FROM image_hashtags ih
+				JOIN hashtags h ON ih.hashtag_id = h.id
+				WHERE ih.image_id = i.id AND h.name = ANY($1)
+			)
 			ORDER BY i.created_at DESC
 			LIMIT $2 OFFSET $3
-		`, hashtag, limit, offset)
+		`, pq.Array(hashtags), limit, offset)
 	} else {
 		// Count total
 		err = r.db.QueryRow(`SELECT COUNT(*) FROM images`).Scan(&total)

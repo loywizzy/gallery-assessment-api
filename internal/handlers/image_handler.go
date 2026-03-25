@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"image-gallery-backend/internal/models"
 	"image-gallery-backend/internal/repository"
@@ -18,11 +19,11 @@ func NewImageHandler(repo *repository.ImageRepository) *ImageHandler {
 	return &ImageHandler{repo: repo}
 }
 
-// GetImages — GET /api/images?page=1&limit=15&hashtag=nature
+// GetImages — GET /api/images?page=1&limit=15&hashtags=nature,city
 func (h *ImageHandler) GetImages(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "15"))
-	hashtag := c.Query("hashtag")
+	hashtagsParam := c.Query("hashtags")
 
 	if page < 1 {
 		page = 1
@@ -31,7 +32,12 @@ func (h *ImageHandler) GetImages(c *gin.Context) {
 		limit = 15
 	}
 
-	images, total, err := h.repo.GetImages(page, limit, hashtag)
+	var hashtags []string
+	if hashtagsParam != "" {
+		hashtags = strings.Split(hashtagsParam, ",")
+	}
+
+	images, total, err := h.repo.GetImages(page, limit, hashtags)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
