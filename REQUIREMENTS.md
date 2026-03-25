@@ -49,7 +49,7 @@
 * **Deployment Method:** Deploy ผ่าน Dockerfile แบบเบ็ดเสร็จ หรือรันคู่ฐานข้อมูลผ่าน `docker-compose`
 
 ### 3.3 Database Server
-* **Provider:** Supabase หรือ Neon (Managed PostgreSQL Server)
+* **Provider:** Supabase (Managed PostgreSQL Server)
 * **Specifications:** 0.25 vCPU, 1GB RAM, 500MB Storage (Free Tier)
 * **Connection:** เชื่อมต่อกับ Backend ผ่าน PostgreSQL Connection String (URI)
 

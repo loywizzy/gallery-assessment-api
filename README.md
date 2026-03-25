@@ -10,11 +10,11 @@ graph TB
         USER["User"]
     end
 
-    subgraph Frontend["📱 Frontend — Vercel / Netlify"]
+    subgraph Frontend["📱 Frontend — Vercel"]
         REACT["React + Vite SPA"]
     end
 
-    subgraph Backend["⚙️ Backend — Render / Koyeb"]
+    subgraph Backend["⚙️ Backend — Render"]
         GIN["Gin HTTP Server"]
         CORS["CORS Middleware"]
         HANDLER["Handlers Layer"]
@@ -22,7 +22,7 @@ graph TB
         MODEL["Models Layer"]
     end
 
-    subgraph Database["🗄️ Database — Supabase / Neon"]
+    subgraph Database["🗄️ Database — Supabase"]
         PG["PostgreSQL"]
         IMG_TBL["images"]
         TAG_TBL["hashtags"]
@@ -204,13 +204,13 @@ erDiagram
 
 ### `GET /api/images`
 
-ดึงรูปภาพทั้งหมด (รองรับ Infinite Scroll + Hashtag Filter)
+ดึงรูปภาพทั้งหมด (รองรับ Infinite Scroll + **Multi-Select Hashtag Filter**)
 
 | Param | Type | Default | Description |
 |-------|------|---------|-------------|
 | `page` | int | 1 | หมายเลขหน้า |
 | `limit` | int | 15 | จำนวนรูปต่อหน้า (max 50) |
-| `hashtag` | string | — | กรองตามชื่อ hashtag |
+| `hashtags` | string | — | กรองตามชื่อ hashtag (ส่งได้หลายค่าโดยใช้ลูกน้ำคั่น เช่น `nature,city`) |
 
 **Response (200 OK):**
 ```json
@@ -264,7 +264,7 @@ Health check endpoint
 
 | Item | Detail |
 |------|--------|
-| **Provider** | Render (Recommended) / Koyeb / Docker Desktop |
+| **Provider** | Render (Production) / Docker Desktop (Local) |
 | **OS/Software** | Linux (Alpine via Multi-stage Dockerfile), Go Runtime 1.26 |
 | **Specs** | 0.1 CPU, 512MB RAM (Free Tier) |
 | **Method** | โค้ดมีการตั้งค่า `Dockerfile` และ `docker-compose.yml` ครบถ้วนพร้อม Deploy! |
@@ -288,7 +288,7 @@ graph LR
     end
 
     subgraph DEPLOY_DB["Database Host"]
-        SUPA["Supabase / Neon"]
+        SUPA["Supabase"]
         PGDB["PostgreSQL"]
     end
 
@@ -318,7 +318,7 @@ docker-compose down -v
 ```bash
 # 1. Setup environment
 cp .env.example .env
-# แก้ไข DATABASE_URL ให้ตรงกับ PostgreSQL (Supabase/Neon)
+# แก้ไข DATABASE_URL ให้ตรงกับ PostgreSQL (Supabase)
 
 # 2. Run server
 go run ./cmd/server/
