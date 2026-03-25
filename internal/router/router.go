@@ -14,7 +14,7 @@ func SetupRouter() *gin.Engine {
 
 	// CORS — อนุญาต Frontend เข้าถึง
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:3000"},
+		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:3000", "https://gallery-assessment-web.vercel.app"},
 		AllowMethods:     []string{"GET"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		AllowCredentials: true,
